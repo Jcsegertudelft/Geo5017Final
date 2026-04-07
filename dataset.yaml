@@ -1,0 +1,10 @@
+path: C:\Users\jobse\Documents\Geo5017_Final_Project
+train: images/train
+val: images/val
+test: images/test
+names:
+ 0: litter
+ 1: other
+ 2: bulky waste
+ 3: cardboard
+ 4: garbage bag

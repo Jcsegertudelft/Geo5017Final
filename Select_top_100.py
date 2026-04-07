@@ -9,7 +9,6 @@ def main(mod_path = "trained_model.pt",
 
     model = YOLO(mod_path)
 
-    image_dir = 'images/test'
     test_images = os.listdir(image_dir)
 
     max_conf = []

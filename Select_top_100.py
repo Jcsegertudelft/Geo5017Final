@@ -3,7 +3,7 @@ from ultralytics import YOLO
 import numpy as np
 from shutil import copyfile
 
-def main(mod_path = "trained_model.pt",
+def main(mod_path = "trained_model_run1.pt",
          image_dir ='images/test',
          outdir = "top_100_detections"):
 

@@ -1,4 +1,4 @@
-best.ptbest.ptepoch,time,train/box_loss,train/cls_loss,train/dfl_loss,metrics/precision(B),metrics/recall(B),metrics/mAP50(B),metrics/mAP50-95(B),val/box_loss,val/cls_loss,val/dfl_loss,lr/pg0,lr/pg1,lr/pg2
+epoch,time,train/box_loss,train/cls_loss,train/dfl_loss,metrics/precision(B),metrics/recall(B),metrics/mAP50(B),metrics/mAP50-95(B),val/box_loss,val/cls_loss,val/dfl_loss,lr/pg0,lr/pg1,lr/pg2
 1,589.663,2.34477,26.1981,1.27321,0.81356,0.05554,0.03477,0.00953,2.40867,17.074,1.37667,0.000369078,0.000369078,0.000369078
 2,1150.32,2.61737,14.1426,1.42415,0.68343,0.04426,0.01998,0.00569,2.93005,9.41007,1.57802,0.000715011,0.000715011,0.000715011
 3,1706.83,2.6783,7.41804,1.54454,0.54062,0.04588,0.02938,0.00837,2.81078,5.50098,1.60848,0.0010365,0.0010365,0.0010365

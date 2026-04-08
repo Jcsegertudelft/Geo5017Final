@@ -20,8 +20,6 @@ def plot_results(results_file):
     ax2.set_title('Classification loss', size = 16, weight = 'bold')
     plt.tight_layout()
     plt.savefig('loss_plot.png',dpi=300)
-    plt.show()
-
 
 
 if __name__ == '__main__':

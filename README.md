@@ -17,3 +17,13 @@ Select_top_100.py copies the top 100 confidence detections of the test set into 
 
 Select_100_falsepos.py en Select_100_falseneg.py select 100 or all cases of false positives and negatives from the validation set as a sample for error analysis. These will be copied into new folders. Being a false positive or false negative is determined image wide. 
 
+# Requirements
+numpy: obtain through pip install numpy
+
+pandas: obtain through pip install pandas
+
+matplotlib: obtain through pip install matplotlib
+
+ultralytics: obtain through pip install ultralytics
+
+Several standard python packages: namely os, statistics and shutil are also utilized. These should be available by default

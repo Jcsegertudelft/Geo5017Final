@@ -6,16 +6,24 @@ from pprint import pprint
 import pandas as pd
 
 def precis_and_recall(model_path, image_folder, label_folder):
+    #Load model
     model = YOLO(model_path)
+
+    #Storage list
     pred_list = []
     true_list = []
+
+    #Storage arrays for class specific stuff
     pred_cls_arr = np.full((5,len(os.listdir(image_folder))), False)
     true_cls_arr = np.full((5,len(os.listdir(image_folder))), False)
     for i,img in enumerate(os.listdir(image_folder)):
+
         #Obtain prediction: is there trash in image
         res = model(os.path.join(image_folder,img))[0]
         any_predicted = len(res.boxes.conf) != 0
         pred_list.append(any_predicted)
+
+        #If so what kind
         if any_predicted:
             predicted_classes = res.boxes.cls
             for cls in predicted_classes:
@@ -30,6 +38,8 @@ def precis_and_recall(model_path, image_folder, label_folder):
         with open(label_path,'r') as f:
             lines = f.readlines()
             any_true = len(lines) != 0
+
+            #If so what kind
             if any_true:
                 for line in lines:
                     cls = int(line.strip().split(' ')[0])
@@ -43,25 +53,42 @@ def precis_and_recall(model_path, image_folder, label_folder):
     false_pos_count = np.sum(pred_array[~true_array])
     false_neg_count = np.sum(true_array[~pred_array])
 
-    precision = true_pos_count/(true_pos_count+false_pos_count)
-    recall = true_pos_count/(true_pos_count+false_neg_count)
+    if true_pos_count == 0 and false_pos_count == 0:
+        precision = 0.
+    else:
+        precision = true_pos_count/(true_pos_count+false_pos_count)
+
+    if true_pos_count == 0 and false_neg_count == 0:
+        recall = 0.
+    else:
+        recall = true_pos_count/(true_pos_count+false_neg_count)
     f1_score = harmonic_mean([precision, recall])
 
+    #Per class precision, recall f1 score
     cls_precision = []
     cls_recall = []
     cls_f1_score = []
-    print(np.sum(pred_cls_arr),np.sum(true_cls_arr))
+
     for i in range(5):
         cls_pred = pred_cls_arr[i]
         cls_true = true_cls_arr[i]
         true_pos_count = np.sum(cls_true[cls_pred])
         false_pos_count = np.sum(cls_pred[~cls_true])
         false_neg_count = np.sum(cls_true[~cls_pred])
-        cls_precision.append(true_pos_count/(true_pos_count+false_pos_count))
-        cls_recall.append(true_pos_count/(true_pos_count+false_neg_count))
+
+        if true_pos_count == 0 and false_pos_count == 0:
+            cls_precision.append(0.)
+        else:
+            cls_precision.append(true_pos_count/(true_pos_count+false_pos_count))
+
+        if true_pos_count == 0 and false_neg_count == 0:
+            cls_recall.append(0.)
+        else:
+            cls_recall.append(true_pos_count/(true_pos_count+false_neg_count))
         cls_f1_score.append(harmonic_mean([cls_precision[i], cls_recall[i]]))
     cls_df = pd.DataFrame()
-    cls_df['Class'] = list(range(5))
+    cls_df['Class_n'] = list(range(5))
+    cls_df['Class'] = ['litter','other','bulky waste','cardboard','garbage bag']
     cls_df['Precision'] = cls_precision
     cls_df['Recall'] = cls_recall
     cls_df['F1_score'] = cls_f1_score
@@ -74,9 +101,11 @@ if __name__ == "__main__":
     label_dir = 'labels/val'
     model1_path = 'trained_model_run1.pt'
     model2_path = 'trained_model_run2.pt'
-    results_1 = precis_and_recall(model1_path, image_dir, label_dir)
-    results_2 = precis_and_recall(model2_path, image_dir, label_dir)
-    print(results_1)
-    print(results_2)
+    model3_path = 'trained_model_e100_multi_scale_025.pt'
+    #results_1 = precis_and_recall(model1_path, image_dir, label_dir)
+    #results_2 = precis_and_recall(model2_path, image_dir, label_dir)
+    results_3 = precis_and_recall(model3_path, image_dir, label_dir)
+    print(f"precision {results_3[0]:.4f}, recall {results_3[1]:.4f}, f1_score {results_3[2]:.4f}")
+
 
 

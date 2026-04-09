@@ -16,7 +16,6 @@ def main(mod_path = "trained_model_run2.pt",
         im_path = os.path.join(image_dir,img)
         result = model(im_path)[0]
         conf = np.array(result.boxes.conf)
-        print(conf)
         if len(conf) != 0:
             max_conf.append(float(np.max(conf)))
         else:

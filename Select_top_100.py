@@ -3,16 +3,20 @@ from ultralytics import YOLO
 import numpy as np
 from shutil import copyfile
 
-def main(mod_path = "trained_model_run2.pt",
+def main(mod_path = "trained_model_e100.pt",
          image_dir ='images/test',
          outdir = "top_100_detections"):
 
+    #Load model
     model = YOLO(mod_path)
 
+    #Get images
     test_images = os.listdir(image_dir)
 
+    #Storage max confidence per image
     max_conf = []
     for img in test_images:
+        #Append max confidence detection per image or 0 if no detection
         im_path = os.path.join(image_dir,img)
         result = model(im_path)[0]
         conf = np.array(result.boxes.conf)
@@ -21,6 +25,7 @@ def main(mod_path = "trained_model_run2.pt",
         else:
             max_conf.append(0.)
 
+    # Making the output directories
     if not os.path.exists(outdir):
         os.makedirs(outdir)
 
@@ -32,9 +37,12 @@ def main(mod_path = "trained_model_run2.pt",
     if not os.path.exists(with_dir):
         os.makedirs(with_dir)
 
+    #Get the top hundred images
     indices_100 = np.argpartition(max_conf, -100)[-100:]
     for i in indices_100:
         im_path = os.path.join(image_dir,test_images[i])
+
+        #Copy both the image without and with the detection boxes
         copied_path_no_boxes = os.path.join(without_dir, test_images[i])
         copied_path_with_boxes = os.path.join(with_dir, test_images[i])
 

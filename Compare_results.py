@@ -2,7 +2,6 @@ import os
 import numpy as np
 from ultralytics import YOLO
 from statistics import harmonic_mean
-from pprint import pprint
 import pandas as pd
 
 def precis_and_recall(model_path, image_folder, label_folder):
